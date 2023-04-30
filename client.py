@@ -15,19 +15,6 @@ suppressPosRspMsgIndicationBit = 0
 
 # ----------------------------------------------------
 
-# MAIN
-
-
-def main():
-    example_singleFrame1()
-
-    print("\nRequest Sent :-")
-    displayFrame(fr)
-
-    writeMessage()
-
-# ----------------------------------------------------
-
 
 def example_sessionControl():
     PCI = 0x2
@@ -50,6 +37,3 @@ def writeMessage():
         for item in fr:
             filehandle.write(f'{item}\n')
 
-
-if __name__ == "__main__":
-    main()

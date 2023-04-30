@@ -23,43 +23,7 @@ m.append(registerBank(0x01403, 0x3F, 0x01))
 m.append(registerBank(0x01404, 0x4F, 0x03))
 m.append(registerBank(0x01405, 0x5F, 0x03))
 
-# ----------------------------------------------------
-
-# MAIN
-
-
-def main():
-    # imitate reading bus data
-    readMessage()
-
-    # configure active session as last used session
-    readSession()
-
-    flagS = 0
-    for i in range(0, 5):
-        if stored_SID[i] == fr[1]:
-            flagS = 1
-            break
-
-    if(flagS):
-        if fr[1] == 0x10:
-            if fr[2] == 0x02 and currentSession == 0x01:
-                session_change_fail()  # defaultSession to programmingSession is unallowed
-            else:
-                session_change_pass()
-                writeSession()
-        else:
-            service_present()
-    else:
-        service_not_supported()
-
-    displayFrame(fr)
-    writeSession()
-
-# ----------------------------------------------------
-
 # Test cases
-
 
 def service_present():
     flagD = 0
@@ -70,45 +34,45 @@ def service_present():
             break
 
     if searchDID == 0xF186:
-        print("\nPositive Response :-")
         fr[0] = 0x4
         fr[1] = fr[1] + 0x40
         fr[4] = currentSession
         fr[5] = fr[6] = fr[7] = 0x00
+        return "\nPositive Response :-"
     elif flagD:
         if m[flagD - 1].session_requirement == currentSession:
-            print("\nPositive Response :-")
             fr[0] = 0x4
             fr[1] = fr[1] + 0x40
             fr[4] = m[flagD - 1].data
             fr[5] = fr[6] = fr[7] = 0x00
+            return "\nPositive Response :-"
         else:
-            session_check_fail()
+            return session_check_fail()
     else:
-        print("\nNegative Response :- NRC : Request Out of Range")
         negative_response_frame(fr, 0x31)
+        return "\nNegative Response :- NRC : Request Out of Range"
 
 
 def service_not_supported():
-    print("\nNegative Response :- NRC : Service Not Supported")
     negative_response_frame(fr, 0x11)
+    return "\nNegative Response :- NRC : Service Not Supported"
 
 
 def session_check_fail():
-    print("\nNegative Response :- NRC : Request Unavailable in Active Session")
     negative_response_frame(fr, 0x7F)
+    return "\nNegative Response :- NRC : Request Unavailable in Active Session"
 
 
 def session_change_fail():
-    print("\nNegative Response :- NRC : Conditions Not Correct")
     negative_response_frame(fr, 0x22)
+    return "\nNegative Response :- NRC : Conditions Not Correct"
 
 
 def session_change_pass():
-    print("\nPositive Response :-")
     fr[0] = 0x04
     fr[1] = fr[1] + 0x40
     fr[3] = fr[4] = fr[5] = fr[7] = fr[7] = 0x00
+    return "\nPositive Response :-"
 
 # ----------------------------------------------------
 
@@ -142,5 +106,5 @@ def writeSession():
 # ----------------------------------------------------
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

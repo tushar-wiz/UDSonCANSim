@@ -46,9 +46,11 @@ SUBFUNC = [
 
 
 def displayFrame(frame):
+    final_string = "\n"
     for i in range(0, 8):
-        print("0x{:02X}".format(frame[i]), end=" ")
-    print()
+        final_string += "0x{:02X} ".format(frame[i])
+    print(final_string)
+    return final_string
 
 # Generate a (request) single frame with a DID
 
