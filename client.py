@@ -25,7 +25,7 @@ def example_sessionControl():
 
 def example_singleFrame1():
     PCI = 0x3
-    single_frame_did(fr, PCI, SID["RDBI"], 0x1408, DATA_ARRAY)
+    single_frame_did(fr, PCI, SID["RDBI"], 0x1402, DATA_ARRAY)
 
 # ----------------------------------------------------
 
@@ -36,4 +36,3 @@ def writeMessage():
     with open('message.txt', 'w+') as filehandle:
         for item in fr:
             filehandle.write(f'{item}\n')
-

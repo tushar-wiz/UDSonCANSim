@@ -25,7 +25,22 @@ m.append(registerBank(0x01405, 0x5F, 0x03))
 
 # Test cases
 
-def service_present():
+
+def ecu_reset_sequence():
+    for i in range(0, 5):
+        m[i].data = 16*(i+1) + 0xF
+    fr[2] = 0x1
+    writeSession()
+
+    fr[0] = 0x3
+    fr[1] = fr[1] + 0x40
+    fr[3] = 0x5
+    fr[4] = fr[5] = fr[6] = fr[7] = 0x00
+
+    return "\nPositive response : ECU will be reset, power down time is 5s"
+
+
+def service_present_RDBI():
     flagD = 0
     searchDID = (fr[2] << 8) | fr[3]
     for i in range(0, 5):
@@ -41,6 +56,28 @@ def service_present():
         return "\nPositive Response :-"
     elif flagD:
         if m[flagD - 1].session_requirement == currentSession:
+            fr[0] = 0x4
+            fr[1] = fr[1] + 0x40
+            fr[4] = m[flagD - 1].data
+            fr[5] = fr[6] = fr[7] = 0x00
+            return "\nPositive Response :-"
+        else:
+            return session_check_fail()
+    else:
+        negative_response_frame(fr, 0x31)
+        return "\nNegative Response :- NRC : Request Out of Range"
+
+
+def service_present_WDBI():
+    flagD = 0
+    searchDID = (fr[2] << 8) | fr[3]
+    for i in range(0, 5):
+        if m[i].stored_DID == searchDID:
+            flagD = i+1
+            break
+    if flagD:
+        if m[flagD - 1].session_requirement == currentSession:
+            m[flagD - 1].data = fr[4]
             fr[0] = 0x4
             fr[1] = fr[1] + 0x40
             fr[4] = m[flagD - 1].data
@@ -71,7 +108,18 @@ def session_change_fail():
 def session_change_pass():
     fr[0] = 0x04
     fr[1] = fr[1] + 0x40
-    fr[3] = fr[4] = fr[5] = fr[7] = fr[7] = 0x00
+    fr[7] = 0x00
+    if fr[2] == 0x01:
+        fr[3] = 0xFF
+        fr[4] = 0xFF
+        fr[5] = 0xFF
+        fr[6] = 0xFF
+    else:
+        fr[3] = 0x02
+        fr[4] = 0xAA
+        fr[5] = 0x02
+        fr[6] = 0xAA
+
     return "\nPositive Response :-"
 
 # ----------------------------------------------------

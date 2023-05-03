@@ -16,9 +16,9 @@ SID = {
     "RDBI": 0x22,   # Read Data By Identifier
     "RMBA": 0x23,   # Read Memory By Address
     "RSDBI": 0x24,
-    "RDBPI": 0x2A,  # Read Data By Identifier
+    "RDBPI": 0x2A,
     "DDDI": 0x2C,
-    "WDBI": 0x2E,   # Write Data By Address
+    "WDBI": 0x2E,   # Write Data By Identifier
     "WMBA": 0x3D,   # Write Memory By Address
     "CDTCI": 0x14,  # Clear DTC Information
     "RDTCI": 0x19,  # Read DTC Information
