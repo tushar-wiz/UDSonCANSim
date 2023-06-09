@@ -24,7 +24,7 @@ Please note that the projects requires the CustomTkinter library for proper func
 
 ## Flowchart
 
-# Methodology
+# Implementation
 
 There are four seperate python scripts out of which three constitute the backend (`headerfile.py, client.py, server.py`) and the fourth script links them all together and is in charge of the front end GUI (`main.py`).
 
