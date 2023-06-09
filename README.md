@@ -168,3 +168,5 @@ The main.py script makes use of a modified version of the `tkinter` library (Cus
 Both `client.py` and `server.py` are invoked within the main.py script allowing for integration of the two scripts.
 
 The GUI allows for user defined UDS frames to be sent over the BUS or can invoke the example presets present within the client.py file. All activity is displayed on the dialogue box on the left.
+
+![](/media/GUI.png "GUI Window")
